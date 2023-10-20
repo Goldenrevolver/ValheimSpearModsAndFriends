@@ -1,0 +1,13 @@
+{
+  "ArcherySkillName": "Archery",
+  "ArcherySkillDescription": "Damage with bows and crossbows.",
+
+  "CombinedPolearmsSkillName": "Polearms",
+  "CombinedPolearmsSkillDescription": "Damage with polearms.",
+
+  "RogueWeaponsSkillName": "Rogue weapons",
+  "RogueWeaponsSkillDescription": "Damage with knives, claws, knuckles or unarmed.",
+
+  "BladesSkillName": "Blades",
+  "BladesSkillDescription": "Damage with swords and knives."
+}
