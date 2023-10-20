@@ -14,7 +14,7 @@ namespace CombineSpearAndPolearmSkills
 
         public static string[] supportedEmbeddedLanguages = new string[] { "English" };
 
-        private const string embeddedLanguagePathFormat = "CombinedSkills.Translations.CombinedSkills.{0}.json";
+        private const string embeddedLanguagePathFormat = "CombineSpearAndPolearmSkills.Translations.CombinedSkills.{0}.json";
 
         private const string loadingLog = "Loading {0} translation file for language: {1}";
         private const string failedLoadLog = "Failed loading {0} translation file for language: {1}";
@@ -23,14 +23,14 @@ namespace CombineSpearAndPolearmSkills
 
         internal static string ToTranslateKey(string keyPart)
         {
-            return $"${keyPrefix}{keyPart.ToLower()}";
+            return $"{keyPrefix}{keyPart.ToLower()}";
         }
 
         internal static void SetupTranslations()
         {
             var currentLanguage = Localization.instance.GetSelectedLanguage();
 
-            var languageFilesFound = Directory.GetFiles(Path.GetDirectoryName(Paths.PluginPath), "QuickStackStore.*.json", SearchOption.AllDirectories);
+            var languageFilesFound = Directory.GetFiles(Path.GetDirectoryName(Paths.PluginPath), "CombineSpearAndPolearmSkills.*.json", SearchOption.AllDirectories);
 
             bool externalFileLoaded = false;
 

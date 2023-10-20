@@ -15,7 +15,7 @@ namespace CombineSpearAndPolearmSkills
 
             foreach (var skill in __instance.m_skills.m_skillData.Values)
             {
-                Helper.Log($"{skill.m_info.m_skill} {skill.m_level} {skill.m_accumulator}");
+                Helper.Log($"Player {__instance.GetPlayerName()} on spawned: {skill.m_info.m_skill} {skill.m_level} {skill.m_accumulator}");
             }
 
             foreach (var skillType in SkillSetupInfo.supportedTypes)

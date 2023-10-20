@@ -99,9 +99,9 @@
     <None Include="GameDir.targets" />
     <None Include="ILRepack.targets" />
     <None Include="packages.config" />
-    <None Include="Translations\CombinedSkills.English.json">
+    <EmbeddedResource Include="Translations\CombinedSkills.English.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Sprites\archery.png" />
