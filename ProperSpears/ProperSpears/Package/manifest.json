@@ -1,0 +1,9 @@
+{
+  "name": "Proper_Spears_Forward_Facing_With_Thrust_Attacks",
+  "description": "Turns spears into the viable long range one handed melee weapons they should be",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Goldenrevolver/ValheimSpearModsAndFriends",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2200"
+  ]
+}
