@@ -1,0 +1,9 @@
+{
+  "name": "Atgeir_Polearm_Animation_Fix",
+  "description": "Fixes misalignments between hand and weapon position for atgeir/polearm animations",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Goldenrevolver/ValheimSpearModsAndFriends",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2200"
+  ]
+}
