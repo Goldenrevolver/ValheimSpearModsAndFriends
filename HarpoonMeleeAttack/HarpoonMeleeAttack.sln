@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarpoonMeleeAttack", "HarpoonMeleeAttack\HarpoonMeleeAttack.csproj", "{AAE0A642-81B7-4C6C-841B-016A482CCB02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAE0A642-81B7-4C6C-841B-016A482CCB02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE0A642-81B7-4C6C-841B-016A482CCB02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE0A642-81B7-4C6C-841B-016A482CCB02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE0A642-81B7-4C6C-841B-016A482CCB02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {612CEA96-FE51-4BEE-B804-2B5E59016960}
+	EndGlobalSection
+EndGlobal
