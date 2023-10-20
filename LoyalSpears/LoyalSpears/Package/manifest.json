@@ -1,0 +1,9 @@
+{
+  "name": "Loyal_Spears_Auto_Pickup_And_Return_To_Owner",
+  "description": "Thrown spears are not auto picked up by other players and they automatically return to you (configurable)",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Goldenrevolver/ValheimSpearModsAndFriends",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2200"
+  ]
+}
