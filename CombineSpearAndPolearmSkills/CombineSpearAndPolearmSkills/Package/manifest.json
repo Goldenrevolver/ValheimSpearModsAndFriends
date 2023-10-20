@@ -1,6 +1,6 @@
 {
   "name": "Combined_Weapon_Skills",
-  "description": "TODO",
+  "description": "Allows you to combine specific weapon skills like spears and polearms, knives and fists, bows and crossbows, retroactively and reversibly",
   "version_number": "1.0.0",
   "website_url": "https://github.com/Goldenrevolver/ValheimSpearModsAndFriends",
   "dependencies": [
