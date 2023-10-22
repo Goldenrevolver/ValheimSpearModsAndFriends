@@ -137,17 +137,17 @@ namespace LoyalSpears
         [HarmonyPatch(typeof(Player), nameof(Player.AutoPickup)), HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> AutoPickupTranspiler(IEnumerable<CodeInstruction> instructions)
         {
-            FieldInfo AutoPickupField = AccessTools.DeclaredField(typeof(ItemDrop), nameof(ItemDrop.m_autoPickup));
-            MethodInfo ShouldAutoPickup = AccessTools.DeclaredMethod(typeof(SpearPatches), nameof(ShouldAutoPickup));
+            FieldInfo autoPickupField = AccessTools.DeclaredField(typeof(ItemDrop), nameof(ItemDrop.m_autoPickup));
+            MethodInfo shouldAutoPickupMethod = AccessTools.DeclaredMethod(typeof(SpearPatches), nameof(SpearPatches.ShouldAutoPickup));
 
             return new CodeMatcher(instructions)
-                .MatchForward(false, new CodeMatch(i => i.LoadsField(AutoPickupField)))
+                .MatchForward(false, new CodeMatch(i => i.LoadsField(autoPickupField)))
                 .InsertAndAdvance(
                     new CodeInstruction(OpCodes.Dup)
                 )
                 .Advance(1)
                 .InsertAndAdvance(
-                    new CodeInstruction(OpCodes.Call, ShouldAutoPickup)
+                    new CodeInstruction(OpCodes.Call, shouldAutoPickupMethod)
                 )
                 .Instructions();
         }
