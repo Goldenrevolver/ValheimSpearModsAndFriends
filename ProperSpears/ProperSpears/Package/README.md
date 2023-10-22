@@ -9,6 +9,8 @@ It's a part of my spear mod collection
 
 Spears are now held the correct way around in their idle animation and are always ready to release a proper deadly thrust attack at chest level with the same range as an atgeir. And you can still throw them just like before!
 
+This mod affects any spear that uses the default overhead poke animation, including modded ones. Compatible with [MaxAxe](https://valheim.thunderstore.io/package/Neobotics/MaxAxe/).
+
 ![image](https://staticdelivery.nexusmods.com/mods/3667/images/2579/2579-1697790106-1431229963.png)![image](https://staticdelivery.nexusmods.com/mods/3667/images/2579/2579-1697790114-782665063.gif)
 
 If [Harpoon Melee Attack And Upgrading](https://valheim.thunderstore.io/package/Goldenrevolver/Harpoon_Melee_Attack_And_Upgrading/) is installed, this will also apply to the abyssal harpoon.
