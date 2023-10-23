@@ -60,7 +60,7 @@ namespace ProperSpears
         {
             var humanoid = __instance.GetComponent<Humanoid>();
 
-            if (!humanoid || !IsSpearWithSwordAttack(humanoid.GetCurrentWeapon()?.m_shared))
+            if (!humanoid || !humanoid.m_nview || !IsSpearWithSwordAttack(humanoid.GetCurrentWeapon()?.m_shared))
             {
                 return;
             }
@@ -72,7 +72,7 @@ namespace ProperSpears
                     continue;
                 }
 
-                if (item.clip.name == "Sword-Attack-R4")
+                if (item.clip.name == "Sword-Attack-R4" && !humanoid.m_currentAttackIsSecondary)
                 {
                     // due to continued multiplication this ramps up over the course of the animation
                     // this leads to the intended effect of a sudden thrust attack after the build up
