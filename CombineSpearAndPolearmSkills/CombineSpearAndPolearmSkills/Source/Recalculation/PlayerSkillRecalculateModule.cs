@@ -6,6 +6,44 @@ namespace CombineSpearAndPolearmSkills
 {
     internal class PlayerSkillRecalculateModule
     {
+        internal static void AdjustExpMultipliers(Player player)
+        {
+            if (CombineConfig.AdjustExpMultipliers.Value)
+            {
+                return;
+            }
+
+            // archery
+
+            var crossbowSkillDef = player.m_skills.GetSkillDef(Skills.SkillType.Crossbows);
+            var bowSkillDef = player.m_skills.GetSkillDef(Skills.SkillType.Bows);
+
+            float archeryStepMult = Mathf.Max(crossbowSkillDef.m_increseStep, bowSkillDef.m_increseStep);
+
+            crossbowSkillDef.m_increseStep = archeryStepMult;
+            bowSkillDef.m_increseStep = archeryStepMult;
+
+            // polearms
+
+            var spearSkillDef = player.m_skills.GetSkillDef(Skills.SkillType.Spears);
+            var atgeirSkillDef = player.m_skills.GetSkillDef(Skills.SkillType.Polearms);
+
+            float polearmStepMult = (atgeirSkillDef.m_increseStep + spearSkillDef.m_increseStep) / 2f;
+
+            spearSkillDef.m_increseStep = polearmStepMult;
+            atgeirSkillDef.m_increseStep = polearmStepMult;
+
+            // rogue weapons
+
+            var unarmedSkillDef = player.m_skills.GetSkillDef(Skills.SkillType.Unarmed);
+            var knivesSkillDef = player.m_skills.GetSkillDef(Skills.SkillType.Knives);
+
+            float rogueStepMult = (unarmedSkillDef.m_increseStep + knivesSkillDef.m_increseStep) / 2f;
+
+            unarmedSkillDef.m_increseStep = rogueStepMult;
+            knivesSkillDef.m_increseStep = rogueStepMult;
+        }
+
         internal static void CheckForExpRecalculate(Player player, Skills.SkillType skillType)
         {
             if (!player || player != Player.m_localPlayer)
@@ -46,14 +84,6 @@ namespace CombineSpearAndPolearmSkills
                 CustomDataAccessor.RevertCombinedSkill(player, CombinedSkill.CreateCombinedSkill(player.m_skills, skillType, lastOtherSkill), info.lastSkillTypeKey, info.lastCombineMethodKey);
             }
 
-            //if (info.forceConfig.Value)
-            //{
-            //    RevertCombinedSkill(player, CombinedSkill.CreateCombinedSkill(player.m_skills, skillType, lastOtherType), info.lastSkillTypeKey, info.lastCombineMethodKey);
-            //    combineSkillStyle = CombineConfig.ForceResetCombineSkillStyle.Value;
-            //}
-            //// reset config value regardless
-            //info.forceConfig.Value = false;
-
             if (currentOtherSkill != null && lastOtherSkill != currentOtherSkill.Value)
             {
                 combineSkillStyle = CombineConfig.CombineSkillStyle.Value;
@@ -61,6 +91,9 @@ namespace CombineSpearAndPolearmSkills
 
             if (combineSkillStyle == null)
             {
+                // this is an intended exit in most situations, not an edge case
+                //Helper.Log("combine skill style is null");
+
                 return;
             }
 
@@ -92,9 +125,11 @@ namespace CombineSpearAndPolearmSkills
         {
             RecalculateLevel(thisSkill, totalCombinedExp);
 
+            // if we are in 'set to higher', 'RecalculateLevel(otherSkill, totalCombinedExp)' will get the same result too, so no need to calculate it again
             if (CombineConfig.SynchronizationStyle.Value == ChangeStyle.SetToHigher)
             {
                 Helper.Log($"Setting {otherSkill.m_info.m_skill} to same level");
+
                 otherSkill.m_level = thisSkill.m_level;
                 otherSkill.m_accumulator = thisSkill.m_accumulator;
             }
@@ -102,15 +137,7 @@ namespace CombineSpearAndPolearmSkills
             {
                 RecalculateLevel(otherSkill, totalCombinedExp);
 
-                //if (CombineConfig.SynchronizationStyle.Value == ChangeStyle.RaiseThenSetToHigher)
-                //{
                 SetToHigher(thisSkill, otherSkill);
-                //}
-
-                //if (thisSkill.m_level != otherSkill.m_level || thisSkill.m_accumulator != otherSkill.m_accumulator)
-                //{
-                //    Debug.LogWarning($"Combined skill {thisSkill} got out of sync with {otherSkill}");
-                //}
             }
         }
 
@@ -134,7 +161,7 @@ namespace CombineSpearAndPolearmSkills
         {
             float leftOverExp = totalCombinedExp;
 
-            skill.m_level = skill.m_level - Mathf.Floor(skill.m_level);
+            skill.m_level -= Mathf.Floor(skill.m_level);
             skill.m_accumulator = 0;
 
             float expForNextLevel = skill.GetNextLevelRequirement();

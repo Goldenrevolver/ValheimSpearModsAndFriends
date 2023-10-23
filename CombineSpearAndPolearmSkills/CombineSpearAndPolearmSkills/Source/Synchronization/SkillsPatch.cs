@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace CombineSpearAndPolearmSkills
 {
@@ -28,7 +29,7 @@ namespace CombineSpearAndPolearmSkills
 
             if (CombineConfig.SynchronizationStyle.Value == ChangeStyle.SetToHigher)
             {
-                int levelDiff = (int)thisSkill.m_level - (int)otherSkill.m_level;
+                int levelDiff = Mathf.FloorToInt(thisSkill.m_level) - Mathf.FloorToInt(otherSkill.m_level);
 
                 otherSkill.m_level = thisSkill.m_level;
                 otherSkill.m_accumulator = thisSkill.m_accumulator;
@@ -42,14 +43,9 @@ namespace CombineSpearAndPolearmSkills
             {
                 bool raiseIncrementedLevel = otherSkill.Raise(factor);
 
-                int levelDiff = 0;
-
-                //if (CombineConfig.SynchronizationStyle.Value == ChangeStyle.RaiseThenSetToHigher)
-                //{
-                levelDiff = (int)thisSkill.m_level - (int)otherSkill.m_level;
+                int levelDiff = Mathf.FloorToInt(thisSkill.m_level) - Mathf.FloorToInt(otherSkill.m_level);
 
                 PlayerSkillRecalculateModule.SetToHigher(thisSkill, otherSkill);
-                //}
 
                 if (levelDiff > 0 || raiseIncrementedLevel)
                 {

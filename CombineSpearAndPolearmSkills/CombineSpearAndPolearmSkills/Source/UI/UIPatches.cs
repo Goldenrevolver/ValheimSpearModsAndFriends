@@ -7,6 +7,8 @@ namespace CombineSpearAndPolearmSkills
     [HarmonyPatch]
     internal class UIPatches
     {
+        // TODO does not work with auga
+
         [HarmonyPriority(Priority.VeryLow)]
         [HarmonyPatch(typeof(Skills), nameof(Skills.GetSkillList)), HarmonyPostfix]
         private static void GetUISkillListPatch(Skills __instance, ref List<Skills.Skill> __result)
@@ -27,8 +29,6 @@ namespace CombineSpearAndPolearmSkills
                 __result.Sort((a, b) => a.CustomCompare(b));
             }
         }
-
-        // TODO does not work with auga
 
         private static void FixLevelBarLengths(ref List<Skills.Skill> uiSkillList)
         {
@@ -74,20 +74,23 @@ namespace CombineSpearAndPolearmSkills
                         newSkill.m_info.m_icon = SpriteLoader.polearmSprite;
                         break;
 
-                    case Skills.SkillType.Swords:
-                        newSkill.m_info.m_icon = SpriteLoader.slashSprite;
+                    case Skills.SkillType.Bows:
+                        newSkill.m_info.m_icon = SpriteLoader.archerySprite;
                         break;
 
                     case Skills.SkillType.Unarmed:
                         newSkill.m_info.m_icon = SpriteLoader.rogueSprite;
                         break;
 
-                    case Skills.SkillType.Bows:
-                        newSkill.m_info.m_icon = SpriteLoader.archerySprite;
-                        break;
+                        //case Skills.SkillType.Swords:
+                        //    newSkill.m_info.m_icon = SpriteLoader.slashSprite;
+                        //    break;
                 }
 
-                skillsToAdd.Add(newSkill);
+                if (newSkill.m_level > 0 || newSkill.m_accumulator > 0)
+                {
+                    skillsToAdd.Add(newSkill);
+                }
 
                 skillsToDelete.Add(thisSkill.m_info.m_skill);
                 skillsToDelete.Add(otherSkill.m_info.m_skill);
@@ -123,9 +126,10 @@ namespace CombineSpearAndPolearmSkills
         internal static void UpdateSkillsMenu(Player player)
         {
             if (!safeToCallSetup
-                || !Helper.HasAugaInstalled()
+                || Helper.HasAugaInstalled()
                 || !CombineConfig.UpdateSkillsMenuOnChange.Value
-                || !InventoryGui.instance || !InventoryGui.instance.m_skillsDialog
+                || !InventoryGui.instance
+                || !InventoryGui.instance.m_skillsDialog
                 || !InventoryGui.instance.m_skillsDialog.gameObject
                 || !InventoryGui.instance.m_skillsDialog.gameObject.activeSelf
                 || !Player.m_localPlayer || player != Player.m_localPlayer)
@@ -180,6 +184,7 @@ namespace CombineSpearAndPolearmSkills
                 }
             }
 
+            /*
             if (CombineConfig.SyncKnivesWith.Value == KnifeSync.SyncWithSwords)
             {
                 if (word == "skill_knives" || word == "skill_swords")
@@ -191,6 +196,7 @@ namespace CombineSpearAndPolearmSkills
                     __result = __instance.Translate(LocalizationLoader.ToTranslateKey("BladesSkillDescription"));
                 }
             }
+            */
         }
     }
 }

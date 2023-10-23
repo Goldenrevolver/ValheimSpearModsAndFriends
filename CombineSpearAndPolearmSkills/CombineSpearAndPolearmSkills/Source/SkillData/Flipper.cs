@@ -13,13 +13,13 @@
                     return CombineConfig.SyncPolearmsWith.Value == PolearmSync.SyncWithSpears ? Skills.SkillType.Spears : Skills.SkillType.None;
 
                 case Skills.SkillType.Knives:
-                    return FlipKnifeSkill();
+                    return CombineConfig.SyncKnivesWith.Value == KnifeSync.SyncWithFists ? Skills.SkillType.Unarmed : Skills.SkillType.None;
 
                 case Skills.SkillType.Unarmed:
                     return CombineConfig.SyncKnivesWith.Value == KnifeSync.SyncWithFists ? Skills.SkillType.Knives : Skills.SkillType.None;
 
-                case Skills.SkillType.Swords:
-                    return CombineConfig.SyncKnivesWith.Value == KnifeSync.SyncWithSwords ? Skills.SkillType.Knives : Skills.SkillType.None;
+                //case Skills.SkillType.Swords:
+                //    return CombineConfig.SyncKnivesWith.Value == KnifeSync.SyncWithSwords ? Skills.SkillType.Knives : Skills.SkillType.None;
 
                 case Skills.SkillType.Crossbows:
                     return CombineConfig.SyncCrossbowsWith.Value == CrossbowSync.SyncWithBows ? Skills.SkillType.Bows : Skills.SkillType.None;
@@ -32,6 +32,7 @@
             }
         }
 
+        /*
         private static Skills.SkillType FlipKnifeSkill()
         {
             switch (CombineConfig.SyncKnivesWith.Value)
@@ -46,5 +47,6 @@
                     return Skills.SkillType.None;
             }
         }
+        */
     }
 }

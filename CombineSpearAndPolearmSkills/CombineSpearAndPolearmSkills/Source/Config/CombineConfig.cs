@@ -11,8 +11,9 @@ namespace CombineSpearAndPolearmSkills
 
         internal static ConfigEntry<CombineSkillStyle> CombineSkillStyle;
         internal static ConfigEntry<ChangeStyle> SynchronizationStyle;
-        internal static ConfigEntry<bool> SyncStatusEffectSkillExpMultiplier;
-        internal static ConfigEntry<bool> SyncStatusEffectSkillLevelBoosts;
+        internal static ConfigEntry<bool> SyncStatusEffectRaiseSkillEffects;
+        internal static ConfigEntry<bool> SyncStatusEffectSkillLevelEffects;
+        internal static ConfigEntry<bool> AdjustExpMultipliers;
 
         internal static ConfigEntry<PolearmSync> SyncPolearmsWith;
         internal static ConfigEntry<KnifeSync> SyncKnivesWith;
@@ -60,8 +61,10 @@ namespace CombineSpearAndPolearmSkills
             CombineSkillStyle = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(CombineSkillStyle), CombineSpearAndPolearmSkills.CombineSkillStyle.RecalculateSum, string.Empty);
             SynchronizationStyle = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(SynchronizationStyle), ChangeStyle.SetToHigher, string.Empty);
 
-            SyncStatusEffectSkillExpMultiplier = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(SyncStatusEffectSkillExpMultiplier), true, string.Empty);
-            SyncStatusEffectSkillLevelBoosts = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(SyncStatusEffectSkillLevelBoosts), true, string.Empty);
+            SyncStatusEffectRaiseSkillEffects = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(SyncStatusEffectRaiseSkillEffects), true, string.Empty);
+            SyncStatusEffectSkillLevelEffects = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(SyncStatusEffectSkillLevelEffects), true, string.Empty);
+
+            AdjustExpMultipliers = plugin.Config.BindSynced(serverSyncInstance, sectionName, nameof(AdjustExpMultipliers), true, string.Empty);
 
             sectionName = "9 - Debugging";
 
@@ -115,6 +118,6 @@ namespace CombineSpearAndPolearmSkills
     {
         Disabled = 0,
         SyncWithFists = 1,
-        SyncWithSwords = 2,
+        //SyncWithSwords = 2,
     }
 }

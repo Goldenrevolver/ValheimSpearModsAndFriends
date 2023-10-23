@@ -16,7 +16,7 @@ namespace CombineSpearAndPolearmSkills
         {
             if (thisSkill.m_info.m_increseStep != otherSkill.m_info.m_increseStep)
             {
-                Helper.LogWarning($"Combined skills {thisSkill.m_info.m_skill} and {otherSkill.m_info.m_skill} have different step size, so they will desync when used in 'raise' mode!");
+                Helper.LogWarning($"Combined skills {thisSkill.m_info.m_skill} and {otherSkill.m_info.m_skill} have different step size ({thisSkill.m_info.m_increseStep} vs {otherSkill.m_info.m_increseStep}), so they will desync when used in 'raise' mode!");
             }
 
             player.m_customData[info.lastSkillTypeKey] = otherSkill.m_info.m_skill.ToString();

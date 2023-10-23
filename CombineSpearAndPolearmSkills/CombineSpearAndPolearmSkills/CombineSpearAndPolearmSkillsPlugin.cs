@@ -11,8 +11,6 @@ namespace CombineSpearAndPolearmSkills
         public const string NAME = "Combined Weapon Skills";
         public const string VERSION = "1.0.0";
 
-        // TODO check new skill menu
-
         protected void Awake()
         {
             SpriteLoader.LoadSprites();

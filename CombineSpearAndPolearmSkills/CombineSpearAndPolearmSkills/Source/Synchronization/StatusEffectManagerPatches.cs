@@ -9,7 +9,7 @@ namespace CombineSpearAndPolearmSkills
         [HarmonyPatch(nameof(SEMan.ModifyRaiseSkill), new Type[] { typeof(Skills.SkillType), typeof(float) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref }), HarmonyPostfix]
         public static void ModifyRaiseSkill(SEMan __instance, Skills.SkillType skill, ref float multiplier)
         {
-            if (!CombineConfig.SyncStatusEffectSkillExpMultiplier.Value)
+            if (!CombineConfig.SyncStatusEffectRaiseSkillEffects.Value)
             {
                 return;
             }
@@ -35,7 +35,7 @@ namespace CombineSpearAndPolearmSkills
         [HarmonyPatch(nameof(SEMan.ModifySkillLevel), new Type[] { typeof(Skills.SkillType), typeof(float) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Ref }), HarmonyPostfix]
         public static void ModifySkillLevel(SEMan __instance, Skills.SkillType skill, ref float level)
         {
-            if (!CombineConfig.SyncStatusEffectSkillLevelBoosts.Value)
+            if (!CombineConfig.SyncStatusEffectSkillLevelEffects.Value)
             {
                 return;
             }

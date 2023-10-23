@@ -25,13 +25,11 @@ namespace CombineSpearAndPolearmSkills
 
         internal string lastSkillTypeKey;
         internal string lastCombineMethodKey;
-        //internal ConfigEntry<bool> forceConfig;
 
-        internal SkillSetupInfo(string lastSkillTypeKey, string lastCombineMethodKey)//, ConfigEntry<bool> forceConfig)
+        internal SkillSetupInfo(string lastSkillTypeKey, string lastCombineMethodKey)
         {
             this.lastSkillTypeKey = lastSkillTypeKey;
             this.lastCombineMethodKey = lastCombineMethodKey;
-            //this.forceConfig = forceConfig;
         }
 
         internal static SkillSetupInfo GetSupportedTypeData(Skills.SkillType skillType)
@@ -39,13 +37,13 @@ namespace CombineSpearAndPolearmSkills
             switch (skillType)
             {
                 case Skills.SkillType.Knives:
-                    return new SkillSetupInfo(lastSkillTypeKeyKnives, lastMethodKeyKnives);//, CombineConfig.ForceResetSkillKnifeCombination);
+                    return new SkillSetupInfo(lastSkillTypeKeyKnives, lastMethodKeyKnives);
 
                 case Skills.SkillType.Polearms:
-                    return new SkillSetupInfo(lastSkillTypeKeyPolearms, lastMethodKeyPolearms);//, CombineConfig.ForceResetSkillPolearmCombination);
+                    return new SkillSetupInfo(lastSkillTypeKeyPolearms, lastMethodKeyPolearms);
 
                 case Skills.SkillType.Crossbows:
-                    return new SkillSetupInfo(lastSkillTypeKeyCrossbows, lastMethodKeyCrossbows);//, CombineConfig.ForceResetSkillCrossbowCombination);
+                    return new SkillSetupInfo(lastSkillTypeKeyCrossbows, lastMethodKeyCrossbows);
 
                 default:
                     throw new Exception("Unsupported type in helper method");
