@@ -11,6 +11,8 @@ It's a part of my spear mod collection
 
 To make spears multiplayer friendly, your thrown spear will no longer be automatically picked up by other players all the time. Anyone can still pick up a spear manually by interacting with it.
 
+Additionally, when throwing a spear, its weight counts as reserved when the game tries to auto pickup other items off the ground until you pick up your spear again (or a maximum duration), so you don't get overencumbered when you pick up your spear.
+
 ### Loyalty Return
 
 Never worry about losing your fully upgraded spear again. A thrown spear returning into the players hand has been seen in games like Minecraft or in the mod Epic Loot already. In this mod, it's not intended to be an immediate return the second you hit (or miss) your enemy. Instead, it will return after a configurable amount of seconds and the default of 20 seconds is more so that you won't lose your spear if you can't find it again. But if you want you can always lower it down to one second to have a combat return (this config setting is server synced).
