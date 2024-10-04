@@ -12,7 +12,7 @@ namespace ProperSpears
     {
         public const string GUID = "goldenrevolver.ProperSpears";
         public const string NAME = "Proper Spears - Forward Facing With Thrust Attacks";
-        public const string VERSION = "1.0.1";
+        public const string VERSION = "1.0.2";
 
         internal static ConfigSync serverSyncInstance;
         internal static ConfigEntry<bool> UseServerSync;

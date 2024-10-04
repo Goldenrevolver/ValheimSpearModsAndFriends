@@ -55,6 +55,8 @@ namespace ProperSpears
             }
         }
 
+        private const string isCurrentlyFlippingSpearKey = ProperSpearsPlugin.GUID + "_IsCurrentlyFlippingSpear";
+
         [HarmonyPatch(typeof(ZSyncAnimation), nameof(ZSyncAnimation.SyncParameters)), HarmonyPostfix]
         public static void SpeedUpSpearThrustAndFixThrow(ZSyncAnimation __instance)
         {
@@ -64,6 +66,8 @@ namespace ProperSpears
             {
                 return;
             }
+
+            bool isThrowingSpear = false;
 
             foreach (var item in __instance.m_animator.GetCurrentAnimatorClipInfo(0))
             {
@@ -82,18 +86,30 @@ namespace ProperSpears
                 }
                 else if (item.clip.name == "throw_spear")
                 {
-                    var shared = humanoid.GetCurrentWeapon().m_shared;
-                    var spear = humanoid.m_visEquipment.m_rightItemInstance;
+                    isThrowingSpear = true;
 
-                    // changing m_attackAnimation back will make IsModifiedSpear return false, this way we only do this once
-                    // this is a fallback if you manage to get your throwing animation interrupted somehow
-                    // since this attack works with the default positions
-                    // also works really well for the harpoon
-                    shared.m_attack.m_attackAnimation = "spear_poke";
+                    var currentWeapon = humanoid.GetCurrentWeapon();
+                    var spearGameObject = humanoid.m_visEquipment.m_rightItemInstance;
 
-                    SpearPositioner.FixSpearRotatationAndPosition(spear, true, IsFangSpear(shared));
+                    if (!currentWeapon.m_customData.TryGetValue(isCurrentlyFlippingSpearKey, out _))
+                    {
+                        currentWeapon.m_customData[isCurrentlyFlippingSpearKey] = "yes";
+
+                        // changing m_attackAnimation back will make IsModifiedSpear return false, this way we only do this once
+                        // this is a fallback if you manage to get your throwing animation interrupted somehow
+                        // since this attack works with the default positions
+                        // (also works really well for the modded harpoon while dragging)
+                        currentWeapon.m_shared.m_attack.m_attackAnimation = "spear_poke";
+
+                        SpearPositioner.FixSpearRotatationAndPosition(spearGameObject, true, IsFangSpear(currentWeapon.m_shared));
+                    }
                     break;
                 }
+            }
+
+            if (!isThrowingSpear)
+            {
+                humanoid.GetCurrentWeapon().m_customData.Remove(isCurrentlyFlippingSpearKey);
             }
         }
 
