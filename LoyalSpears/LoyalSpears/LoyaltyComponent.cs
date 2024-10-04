@@ -3,52 +3,48 @@ using UnityEngine;
 
 namespace LoyalSpears
 {
-    internal class LoyaltyComponent : MonoBehaviour
+    internal class LoyaltyComponent : WeightReserverComponent
     {
-        private ItemDrop attachedItem;
-
-        private Player originalOwner;
-
         // ask IronGate why death count is a float
         private float ownerDeathCountOnThrow;
 
-        public void Setup(ItemDrop attachedItem, Player originalOwner, float ownerDeathCountOnThrow)
+        private ItemDrop attachedItemDrop;
+
+        public void Setup(ItemDrop attachedItemDrop, Player originalOwner, float ownerDeathCountOnThrow)
         {
-            this.attachedItem = attachedItem;
-            this.originalOwner = originalOwner;
+            this.attachedItemDrop = attachedItemDrop;
             this.ownerDeathCountOnThrow = ownerDeathCountOnThrow;
+
+            base.Setup(attachedItemDrop.m_itemData, originalOwner);
         }
 
-        public void StartReturnTimer()
+        protected override void StartTimer()
         {
-            if (attachedItem)
-            {
-                // use string overload because we also use the string overload to potentially stop it:
-                // https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html
-                this.StartCoroutine(nameof(ReturnInABit));
-            }
-            else
-            {
-                // we only try once
-                Destroy(this);
-            }
+            // use string overload because we also use the string overload to potentially stop it:
+            // https://docs.unity3d.com/ScriptReference/MonoBehaviour.StopCoroutine.html
+            this.StartCoroutine(nameof(ReturnInABit));
         }
 
-        internal IEnumerator ReturnInABit()
+        public override void StopTimer()
         {
-            var seconds = LoyalSpearsPlugin.GroundSecondsUntilAutoReturn.Value;
+            this.StopCoroutine(nameof(ReturnInABit));
+        }
+
+        private IEnumerator ReturnInABit()
+        {
+            float seconds = LoyalSpearsPlugin.GroundSecondsUntilAutoReturn.Value;
 
             if (seconds > 0)
             {
                 yield return new WaitForSeconds(seconds);
             }
 
-            if (originalOwner && attachedItem && attachedItem.CanPickup())
+            if (originalOwner && attachedItemDrop && attachedItemDrop.CanPickup())
             {
-                originalOwner.m_nview.InvokeRPC("RPC_PickupLoyaltySpear", attachedItem.m_nview.GetZDO().m_uid, ownerDeathCountOnThrow);
+                originalOwner.m_nview.InvokeRPC("RPC_PickupLoyaltySpear", attachedItemDrop.m_nview.GetZDO().m_uid, ownerDeathCountOnThrow);
             }
 
-            // we only try once
+            // we only try to return once
             Destroy(this);
         }
     }

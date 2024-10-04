@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using UnityEngine;
 
 namespace LoyalSpears
 {
@@ -11,16 +12,6 @@ namespace LoyalSpears
         public static bool IsSpear(ItemDrop.ItemData itemData)
         {
             return itemData != null && itemData.m_shared != null && itemData.m_shared.m_skillType == Skills.SkillType.Spears;
-        }
-
-        public static bool IsNonOwnedSpear(ItemDrop itemDrop)
-        {
-            if (!itemDrop || itemDrop.m_itemData == null)
-            {
-                return false;
-            }
-
-            return IsSpear(itemDrop.m_itemData) && !itemDrop.m_nview.IsOwner();
         }
 
         [HarmonyPatch(typeof(Player), nameof(Player.Awake)), HarmonyPostfix]
@@ -45,13 +36,29 @@ namespace LoyalSpears
                 return;
             }
 
-            var currentDeathCount = Game.instance.m_playerProfile.m_playerStats[PlayerStatType.Deaths];
-
-            // if you die before picking up your spear, I don't want it to teleport across dimensions back into your inventory
-            // also tracking the death count is easier/more clean than tracking the coroutine and trying to kill it in time
-            if (currentDeathCount > deathCountOnThrow)
+            if (!player.m_inventory.CanAddItem(itemDrop.m_itemData))
             {
                 return;
+            }
+
+            if (LoyalSpearsPlugin.SpearReturnOverencumberProtection.Value)
+            {
+                if (itemDrop.m_itemData.GetWeight() + player.m_inventory.GetTotalWeight() > player.GetMaxCarryWeight())
+                {
+                    return;
+                }
+            }
+
+            if (deathCountOnThrow >= 0)
+            {
+                float currentDeathCount = Game.instance.m_playerProfile.m_playerStats[PlayerStatType.Deaths];
+
+                // if you die before picking up your spear, I don't want it to teleport across dimensions back into your inventory
+                // also tracking the death count is easier/more clean than tracking the coroutine and trying to kill it in time
+                if (currentDeathCount > deathCountOnThrow)
+                {
+                    return;
+                }
             }
 
             itemDrop.Pickup(player);
@@ -61,30 +68,64 @@ namespace LoyalSpears
         {
             // return type is for the transpiler to work
 
-            if (LoyalSpearsPlugin.GroundSecondsUntilAutoReturn.Value < 0)
-            {
-                return item;
-            }
-
             if (projectile.m_owner is Player player && player == Player.m_localPlayer && item && IsSpear(item.m_itemData))
             {
-                if (item.gameObject.TryGetComponent<LoyaltyComponent>(out var loyalty))
+                if (LoyalSpearsPlugin.GroundSecondsUntilAutoReturn.Value >= 0f)
                 {
-                    loyalty.StopCoroutine(nameof(LoyaltyComponent.ReturnInABit));
+                    if (item.gameObject.TryGetComponent<LoyaltyComponent>(out var loyalty))
+                    {
+                        loyalty.StopTimer();
+                    }
+                    else
+                    {
+                        loyalty = item.gameObject.AddComponent<LoyaltyComponent>();
+                    }
+
+                    float deathCount = Game.instance.m_playerProfile.m_playerStats[PlayerStatType.Deaths];
+
+                    loyalty.Setup(item, player, deathCount);
                 }
-                else
+                else if (LoyalSpearsPlugin.MaxSecondsToReserveCarryingCapacityForThrownSpears.Value >= 0f)
                 {
-                    loyalty = item.gameObject.AddComponent<LoyaltyComponent>();
+                    if (item.gameObject.TryGetComponent<WeightReserverComponent>(out var weightReserver))
+                    {
+                        weightReserver.StopTimer();
+                    }
+                    else
+                    {
+                        weightReserver = item.gameObject.AddComponent<WeightReserverComponent>();
+                    }
+
+                    weightReserver.Setup(item.m_itemData, player);
                 }
-
-                var deathCount = Game.instance.m_playerProfile.m_playerStats[PlayerStatType.Deaths];
-
-                loyalty.Setup(item, player, deathCount);
-
-                loyalty.StartReturnTimer();
             }
 
             return item;
+        }
+
+        [HarmonyPatch(typeof(Projectile), nameof(Projectile.Setup)), HarmonyPostfix]
+        public static void Projectile_Setup_Postfix(Projectile __instance)
+        {
+            var item = __instance.m_spawnItem;
+
+            if (LoyalSpearsPlugin.MaxSecondsToReserveCarryingCapacityForThrownSpears.Value < 0f)
+            {
+                return;
+            }
+
+            if (__instance.m_owner is Player player && player == Player.m_localPlayer && item != null && IsSpear(item))
+            {
+                if (__instance.gameObject.TryGetComponent<WeightReserverComponent>(out var weightReserver))
+                {
+                    weightReserver.StopTimer();
+                }
+                else
+                {
+                    weightReserver = __instance.gameObject.AddComponent<WeightReserverComponent>();
+                }
+
+                weightReserver.Setup(item, player);
+            }
         }
 
         [HarmonyPatch(typeof(Projectile), nameof(Projectile.SpawnOnHit)), HarmonyTranspiler]
@@ -114,10 +155,10 @@ namespace LoyalSpears
 
             if (player is Player && item != null && IsSpear(item))
             {
-                var v = player.transform.position - __instance.transform.position;
-                var distSq = v.sqrMagnitude;
+                Vector3 v = player.transform.position - __instance.transform.position;
+                float distSq = v.sqrMagnitude;
 
-                var autoReturnDistance = LoyalSpearsPlugin.FlightDistanceUntilAutoReturn.Value;
+                float autoReturnDistance = LoyalSpearsPlugin.FlightDistanceUntilAutoReturn.Value;
 
                 if (autoReturnDistance < 0)
                 {
@@ -127,7 +168,8 @@ namespace LoyalSpears
                 if (distSq > autoReturnDistance * autoReturnDistance)
                 {
                     var itemDrop = ItemDrop.DropItem(__instance.m_spawnItem, 0, __instance.transform.position, __instance.transform.rotation);
-                    player.m_nview.InvokeRPC("RPC_PickupLoyaltySpear", itemDrop.m_nview.GetZDO().m_uid);
+
+                    player.m_nview.InvokeRPC("RPC_PickupLoyaltySpear", itemDrop.m_nview.GetZDO().m_uid, -1f);
                     __instance.m_spawnItem = null;
                     ZNetScene.instance.Destroy(__instance.gameObject);
                 }
@@ -143,18 +185,72 @@ namespace LoyalSpears
             return new CodeMatcher(instructions)
                 .MatchForward(false, new CodeMatch(i => i.LoadsField(autoPickupField)))
                 .InsertAndAdvance(
-                    new CodeInstruction(OpCodes.Dup)
+                    new CodeInstruction(OpCodes.Dup) // local ItemDrop variable
                 )
                 .Advance(1)
+                .InsertAndAdvance(
+                    new CodeInstruction(OpCodes.Ldarg_0) // 'this' object
+                )
                 .InsertAndAdvance(
                     new CodeInstruction(OpCodes.Call, shouldAutoPickupMethod)
                 )
                 .Instructions();
         }
 
-        public static bool ShouldAutoPickup(ItemDrop itemDrop, bool isAutoPickupable)
+        public static bool ShouldAutoPickup(ItemDrop itemDrop, bool isAutoPickupable, Player player)
         {
-            return isAutoPickupable && !IsNonOwnedSpear(itemDrop);
+            if (!isAutoPickupable)
+            {
+                return false;
+            }
+
+            if (!itemDrop || itemDrop.m_itemData == null)
+            {
+                return false;
+            }
+
+            bool isSpear = IsSpear(itemDrop.m_itemData);
+
+            bool isNotYourSpear = false;
+            if (isSpear && itemDrop.TryGetComponent<LoyaltyComponent>(out var loyaltyComponent))
+            {
+                isNotYourSpear = loyaltyComponent.OriginalOwner != player;
+            }
+
+            if (isNotYourSpear)
+            {
+                return false;
+            }
+
+            if (LoyalSpearsPlugin.MaxSecondsToReserveCarryingCapacityForThrownSpears.Value < 0f || isSpear)
+            {
+                return true;
+            }
+
+            float weightToReserve = 0f;
+
+            if (player.TryGetComponent<WeightReserverWatcherComponent>(out var loyaltyWatcherComponent))
+            {
+                for (int i = loyaltyWatcherComponent.LoyalSpears.Count - 1; i >= 0; i--)
+                {
+                    WeightReserverComponent loyalSpear = loyaltyWatcherComponent.LoyalSpears[i];
+                    if (loyalSpear && loyalSpear.AttachedItemData != null)
+                    {
+                        weightToReserve += loyalSpear.AttachedItemData.GetWeight();
+                    }
+                    else
+                    {
+                        loyaltyWatcherComponent.LoyalSpears.RemoveAt(i);
+                    }
+                }
+            }
+
+            if (weightToReserve > 0f && itemDrop.m_itemData.GetWeight() + player.m_inventory.GetTotalWeight() > player.GetMaxCarryWeight() - weightToReserve)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

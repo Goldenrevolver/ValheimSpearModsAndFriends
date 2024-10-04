@@ -89,6 +89,7 @@
     <Compile Include="ServerSync\ServerSyncWrapper.cs" />
     <Compile Include="SpearPatches.cs" />
     <Compile Include="LoyalSpearsPlugin.cs" />
+    <Compile Include="WeightReserverComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameDir.targets" />
