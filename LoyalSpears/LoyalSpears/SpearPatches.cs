@@ -199,25 +199,19 @@ namespace LoyalSpears
 
         public static bool ShouldAutoPickup(ItemDrop itemDrop, bool isAutoPickupable, Player player)
         {
-            if (!isAutoPickupable)
+            if (!itemDrop || itemDrop.m_itemData == null)
             {
-                return false;
+                return isAutoPickupable;
             }
 
-            if (!itemDrop || itemDrop.m_itemData == null)
+            if (!isAutoPickupable)
             {
                 return false;
             }
 
             bool isSpear = IsSpear(itemDrop.m_itemData);
 
-            bool isNotYourSpear = false;
-            if (isSpear && itemDrop.TryGetComponent<LoyaltyComponent>(out var loyaltyComponent))
-            {
-                isNotYourSpear = loyaltyComponent.OriginalOwner != player;
-            }
-
-            if (isNotYourSpear)
+            if (isSpear && itemDrop.m_nview && !itemDrop.m_nview.IsOwner())
             {
                 return false;
             }

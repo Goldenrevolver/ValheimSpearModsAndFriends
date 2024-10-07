@@ -21,7 +21,7 @@ Never worry about losing your fully upgraded spear again. A thrown spear returni
 
 ### Credits
 
-The Auto Pickup restriction is inspired by the mod [HoldMySpear](https://valheim.thunderstore.io/package/Kevver/HoldMySpear/) by Kevver. I didn't like the invasive permanent binding, so I opted for the approach of just preventing the auto pickup.
+The auto pickup restriction is inspired by the mod [HoldMySpear](https://valheim.thunderstore.io/package/Kevver/HoldMySpear/) by Kevver. I didn't like the invasive permanent binding, so I opted for the approach of just preventing the auto pickup.
 
 A part of the code is based on the 'Recall Weapon' effect from [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) which has been taken with permission.
 \
