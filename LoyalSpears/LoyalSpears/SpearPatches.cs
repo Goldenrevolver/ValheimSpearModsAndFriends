@@ -209,14 +209,12 @@ namespace LoyalSpears
                 return false;
             }
 
-            bool isSpear = IsSpear(itemDrop.m_itemData);
-
-            if (isSpear && itemDrop.m_nview && !itemDrop.m_nview.IsOwner())
+            if (IsSpear(itemDrop.m_itemData))
             {
-                return false;
+                return !(itemDrop.m_nview && !itemDrop.m_nview.IsOwner());
             }
 
-            if (LoyalSpearsPlugin.MaxSecondsToReserveCarryingCapacityForThrownSpears.Value < 0f || isSpear)
+            if (LoyalSpearsPlugin.MaxSecondsToReserveCarryingCapacityForThrownSpears.Value < 0f)
             {
                 return true;
             }
