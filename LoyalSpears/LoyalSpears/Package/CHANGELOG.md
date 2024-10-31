@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.1.2
+- Update for current public release 0.219.14
 ## 1.1.1
 - Fixed spear owner check for auto pickup prevention not working in version 1.1
 ## 1.1.0

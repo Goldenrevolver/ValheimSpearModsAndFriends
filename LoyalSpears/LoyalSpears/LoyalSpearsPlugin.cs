@@ -11,7 +11,7 @@ namespace LoyalSpears
     {
         public const string GUID = "goldenrevolver.LoyalSpears";
         public const string NAME = "Loyal Spears - Auto Pickup And Return To Owner";
-        public const string VERSION = "1.1.1";
+        public const string VERSION = "1.1.2";
 
         internal static ConfigSync serverSyncInstance;
         internal static ConfigEntry<bool> UseServerSync;
