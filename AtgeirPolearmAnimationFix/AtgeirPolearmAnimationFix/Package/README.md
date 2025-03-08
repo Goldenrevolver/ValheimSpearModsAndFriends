@@ -5,7 +5,6 @@ It's a part of my spear mod collection
 - [Loyal Spears - Auto Pickup And Return To Owner](https://valheim.thunderstore.io/package/Goldenrevolver/Loyal_Spears_Auto_Pickup_And_Return_To_Owner/)
 - [Harpoon Melee Attack And Upgrading](https://valheim.thunderstore.io/package/Goldenrevolver/Harpoon_Melee_Attack_And_Upgrading/)
 - [Atgeir/Polearm Animation Fix](https://valheim.thunderstore.io/package/Goldenrevolver/Atgeir_Polearm_Animation_Fix/)
-- Combined Weapon Skills - Spears And Polearms (currently in testing)
 
 The atgeir/polearm animations have quite a few animation flaws since release, but I found the one on the first attack of the primary attack chain the hardest to ignore, so I fixed it. I may fix a few more of them in the future if I use atgeirs more regularly. I hope this helps you focus more on the action and fun instead of the animation flaw!
 

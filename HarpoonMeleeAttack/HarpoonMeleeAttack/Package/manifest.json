@@ -1,7 +1,7 @@
 {
   "name": "Harpoon_Melee_Attack_And_Upgrading",
   "description": "Gives the harpoon the spear primary attack and moves the harpoon throw to the secondary attack",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "website_url": "https://github.com/Goldenrevolver/ValheimSpearModsAndFriends",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2200"

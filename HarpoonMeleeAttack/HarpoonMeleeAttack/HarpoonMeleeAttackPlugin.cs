@@ -11,7 +11,7 @@ namespace HarpoonMeleeAttack
     {
         public const string GUID = "goldenrevolver.HarpoonMeleeAttack";
         public const string NAME = "Harpoon Melee Attack And Upgrading";
-        public const string VERSION = "1.0.0";
+        public const string VERSION = "1.0.1";
 
         internal static ConfigSync serverSyncInstance;
         internal static ConfigEntry<bool> UseServerSync;

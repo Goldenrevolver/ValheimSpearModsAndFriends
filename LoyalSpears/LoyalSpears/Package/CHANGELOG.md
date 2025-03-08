@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.1.3
+- Fixed crossplay multiplayer not working (updated ServerSync)
 ## 1.1.2
 - Update for current public release 0.219.14
 ## 1.1.1

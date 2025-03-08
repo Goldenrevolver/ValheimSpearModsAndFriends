@@ -5,7 +5,6 @@ It's a part of my spear mod collection
 - [Loyal Spears - Auto Pickup And Return To Owner](https://valheim.thunderstore.io/package/Goldenrevolver/Loyal_Spears_Auto_Pickup_And_Return_To_Owner/)
 - [Harpoon Melee Attack And Upgrading](https://valheim.thunderstore.io/package/Goldenrevolver/Harpoon_Melee_Attack_And_Upgrading/)
 - [Atgeir/Polearm Animation Fix](https://valheim.thunderstore.io/package/Goldenrevolver/Atgeir_Polearm_Animation_Fix/)
-- Combined Weapon Skills - Spears And Polearms (currently in testing)
 
 Spears are now held the correct way around in their idle animation and are always ready to release a proper deadly thrust attack at chest level with the same range as an atgeir. And you can still throw them just like before!
 

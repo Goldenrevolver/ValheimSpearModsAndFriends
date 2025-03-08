@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.0.3
+- Fixed crossplay multiplayer not working (updated ServerSync)
 ## 1.0.2
 - No longer triggers animation fallback when immediately picking up your spear while still in the throwing animation
 ## 1.0.1

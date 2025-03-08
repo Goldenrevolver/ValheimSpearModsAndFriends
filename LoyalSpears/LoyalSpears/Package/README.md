@@ -5,7 +5,6 @@ It's a part of my spear mod collection
 - [Loyal Spears - Auto Pickup And Return To Owner](https://valheim.thunderstore.io/package/Goldenrevolver/Loyal_Spears_Auto_Pickup_And_Return_To_Owner/)
 - [Harpoon Melee Attack And Upgrading](https://valheim.thunderstore.io/package/Goldenrevolver/Harpoon_Melee_Attack_And_Upgrading/)
 - [Atgeir/Polearm Animation Fix](https://valheim.thunderstore.io/package/Goldenrevolver/Atgeir_Polearm_Animation_Fix/)
-- Combined Weapon Skills - Spears And Polearms (currently in testing)
 
 ### Auto Pickup
 
