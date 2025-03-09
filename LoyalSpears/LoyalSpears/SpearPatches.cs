@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+using BepInEx.Bootstrap;
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -12,6 +13,44 @@ namespace LoyalSpears
         public static bool IsSpear(ItemDrop.ItemData itemData)
         {
             return itemData != null && itemData.m_shared != null && itemData.m_shared.m_skillType == Skills.SkillType.Spears;
+        }
+
+        public static bool IsWeapon(ItemDrop.ItemData itemData)
+        {
+            if (itemData == null || itemData.m_shared == null)
+                return false;
+
+            switch (itemData.m_shared.m_itemType)
+            {
+                case ItemDrop.ItemData.ItemType.OneHandedWeapon:
+                case ItemDrop.ItemData.ItemType.TwoHandedWeapon:
+                case ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsThrowableWeaponModInstalled()
+        {
+            if (Chainloader.PluginInfos.ContainsKey("randyknapp.mods.epicloot"))
+                return true;
+
+            if (Chainloader.PluginInfos.ContainsKey("neobotics.valheim_mod.maxaxe"))
+                return true;
+
+            return false;
+        }
+
+        public static bool IsPotentiallyThrowable(ItemDrop.ItemData itemData)
+        {
+            if (IsSpear(itemData))
+                return true;
+
+            if (IsThrowableWeaponModInstalled())
+                return IsWeapon(itemData);
+
+            return false;
         }
 
         [HarmonyPatch(typeof(Player), nameof(Player.Awake)), HarmonyPostfix]
@@ -209,7 +248,7 @@ namespace LoyalSpears
                 return false;
             }
 
-            if (IsSpear(itemDrop.m_itemData))
+            if (IsPotentiallyThrowable(itemDrop.m_itemData))
             {
                 return !(itemDrop.m_nview && !itemDrop.m_nview.IsOwner());
             }
