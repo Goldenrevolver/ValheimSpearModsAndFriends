@@ -243,19 +243,27 @@ namespace LoyalSpears
                 return isAutoPickupable;
             }
 
+            // we never change 'false' to 'true', so we can stop here
             if (!isAutoPickupable)
             {
-                return false;
+                return isAutoPickupable;
             }
 
             if (IsPotentiallyThrowable(itemDrop.m_itemData))
             {
                 return !(itemDrop.m_nview && !itemDrop.m_nview.IsOwner());
             }
+            else
+            {
+                return !BlockAutoPickupDueToReservedWeight(itemDrop, player);
+            }
+        }
 
+        private static bool BlockAutoPickupDueToReservedWeight(ItemDrop itemDrop, Player player)
+        {
             if (LoyalSpearsPlugin.MaxSecondsToReserveCarryingCapacityForThrownSpears.Value < 0f)
             {
-                return true;
+                return false;
             }
 
             float weightToReserve = 0f;
@@ -276,12 +284,12 @@ namespace LoyalSpears
                 }
             }
 
-            if (weightToReserve > 0f && itemDrop.m_itemData.GetWeight() + player.m_inventory.GetTotalWeight() > player.GetMaxCarryWeight() - weightToReserve)
+            if (weightToReserve <= 0f)
             {
                 return false;
             }
 
-            return true;
+            return itemDrop.m_itemData.GetWeight() + player.m_inventory.GetTotalWeight() > player.GetMaxCarryWeight() - weightToReserve;
         }
     }
 }
