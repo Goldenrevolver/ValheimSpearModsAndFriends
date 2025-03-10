@@ -274,18 +274,18 @@ namespace LoyalSpears
 
             float weightToReserve = 0f;
 
-            if (player.TryGetComponent<WeightReserverWatcherComponent>(out var loyaltyWatcherComponent))
+            if (player.TryGetComponent<PlayerWeightReserverTrackerComponent>(out var playerWeightReserverTracker))
             {
-                for (int i = loyaltyWatcherComponent.LoyalSpears.Count - 1; i >= 0; i--)
+                for (int i = playerWeightReserverTracker.WeightReservers.Count - 1; i >= 0; i--)
                 {
-                    WeightReserverComponent loyalSpear = loyaltyWatcherComponent.LoyalSpears[i];
-                    if (loyalSpear && loyalSpear.AttachedItemData != null)
+                    WeightReserverComponent weightReserver = playerWeightReserverTracker.WeightReservers[i];
+                    if (weightReserver && weightReserver.AttachedItemData != null)
                     {
-                        weightToReserve += loyalSpear.AttachedItemData.GetWeight();
+                        weightToReserve += weightReserver.AttachedItemData.GetWeight();
                     }
                     else
                     {
-                        loyaltyWatcherComponent.LoyalSpears.RemoveAt(i);
+                        playerWeightReserverTracker.WeightReservers.RemoveAt(i);
                     }
                 }
             }

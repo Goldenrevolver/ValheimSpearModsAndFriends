@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace LoyalSpears
 {
-    internal class WeightReserverWatcherComponent : MonoBehaviour
+    internal class PlayerWeightReserverTrackerComponent : MonoBehaviour
     {
-        public readonly List<WeightReserverComponent> LoyalSpears = new List<WeightReserverComponent>();
+        public readonly List<WeightReserverComponent> WeightReservers = new List<WeightReserverComponent>();
     }
 
     internal class WeightReserverComponent : MonoBehaviour
@@ -21,15 +21,21 @@ namespace LoyalSpears
 
         public void Setup(ItemDrop.ItemData attachedItemData, Player originalOwner)
         {
+            if (originalOwner == null)
+            {
+                Destroy(this);
+                return;
+            }
+
             this.attachedItemData = attachedItemData;
             this.originalOwner = originalOwner;
 
-            if (!this.originalOwner.TryGetComponent<WeightReserverWatcherComponent>(out var loyaltyWatcherComponent))
+            if (!this.originalOwner.TryGetComponent<PlayerWeightReserverTrackerComponent>(out var playerWeightReserverTracker))
             {
-                loyaltyWatcherComponent = this.originalOwner.gameObject.AddComponent<WeightReserverWatcherComponent>();
+                playerWeightReserverTracker = this.originalOwner.gameObject.AddComponent<PlayerWeightReserverTrackerComponent>();
             }
 
-            loyaltyWatcherComponent.LoyalSpears.Add(this);
+            playerWeightReserverTracker.WeightReservers.Add(this);
 
             StartTimer();
         }
@@ -60,9 +66,9 @@ namespace LoyalSpears
 
         public void OnDestroy()
         {
-            if (this.originalOwner.TryGetComponent<WeightReserverWatcherComponent>(out var loyaltyWatcherComponent))
+            if (this.originalOwner.TryGetComponent<PlayerWeightReserverTrackerComponent>(out var playerWeightReserverTracker))
             {
-                loyaltyWatcherComponent.LoyalSpears.Remove(this);
+                playerWeightReserverTracker.WeightReservers.Remove(this);
             }
         }
     }
