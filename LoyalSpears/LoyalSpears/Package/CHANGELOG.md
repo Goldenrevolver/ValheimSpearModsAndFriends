@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.2.0
+- Compatibility for EpicLoot: 'Carrying capacity reservation' and 'Auto pickup prevention for other players' now also work for EpicLoot throwables
 ## 1.1.3
 - Fixed crossplay multiplayer not working (updated ServerSync)
 ## 1.1.2

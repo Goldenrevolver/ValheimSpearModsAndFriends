@@ -18,6 +18,10 @@ Never worry about losing your fully upgraded spear again. A thrown spear returni
 
 ![image](https://staticdelivery.nexusmods.com/mods/3667/images/2578/2578-1697791831-1900611394.gif)
 
+### Compatibility
+
+[Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) throwables are also not auto picked up by other players and also reserve carrying capacity for the thrower.
+
 ### Credits
 
 The auto pickup restriction is inspired by the mod [HoldMySpear](https://valheim.thunderstore.io/package/Kevver/HoldMySpear/) by Kevver. I didn't like the invasive permanent binding, so I opted for the approach of just preventing the auto pickup.
