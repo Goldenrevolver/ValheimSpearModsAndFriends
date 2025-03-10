@@ -26,16 +26,22 @@ namespace LoyalSpears
                 case ItemDrop.ItemData.ItemType.TwoHandedWeapon:
                 case ItemDrop.ItemData.ItemType.TwoHandedWeaponLeft:
                     return true;
+
                 default:
                     return false;
             }
         }
 
-        public static bool IsThrowableWeaponModInstalled()
+        public static bool IsCompatibleThrowableWeaponModInstalled()
         {
             if (Chainloader.PluginInfos.ContainsKey("randyknapp.mods.epicloot"))
                 return true;
 
+            return false;
+        }
+
+        public static bool IsIncompatibleThrowableWeaponModInstalled()
+        {
             if (Chainloader.PluginInfos.ContainsKey("neobotics.valheim_mod.maxaxe"))
                 return true;
 
@@ -47,7 +53,7 @@ namespace LoyalSpears
             if (IsSpear(itemData))
                 return true;
 
-            if (IsThrowableWeaponModInstalled())
+            if (!IsIncompatibleThrowableWeaponModInstalled() && IsCompatibleThrowableWeaponModInstalled())
                 return IsWeapon(itemData);
 
             return false;
@@ -107,9 +113,9 @@ namespace LoyalSpears
         {
             // return type is for the transpiler to work
 
-            if (projectile.m_owner is Player player && player == Player.m_localPlayer && item && IsSpear(item.m_itemData))
+            if (projectile.m_owner is Player player && player == Player.m_localPlayer && item && IsPotentiallyThrowable(item.m_itemData))
             {
-                if (LoyalSpearsPlugin.GroundSecondsUntilAutoReturn.Value >= 0f)
+                if (IsSpear(item.m_itemData) && LoyalSpearsPlugin.GroundSecondsUntilAutoReturn.Value >= 0f)
                 {
                     if (item.gameObject.TryGetComponent<LoyaltyComponent>(out var loyalty))
                     {
@@ -152,7 +158,7 @@ namespace LoyalSpears
                 return;
             }
 
-            if (__instance.m_owner is Player player && player == Player.m_localPlayer && item != null && IsSpear(item))
+            if (__instance.m_owner is Player player && player == Player.m_localPlayer && item != null && IsPotentiallyThrowable(item))
             {
                 if (__instance.gameObject.TryGetComponent<WeightReserverComponent>(out var weightReserver))
                 {
